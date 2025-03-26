@@ -57,3 +57,60 @@
 2025-03-27 04:34:20,863 - Successfully retrieved symptoms list
 2025-03-27 04:35:06,060 - Processing triage assessment for patient age 12
 2025-03-27 04:35:06,203 - Assessment saved to database with severity level: Critical
+2025-03-27 04:38:25,751 - Successfully retrieved symptoms list
+2025-03-27 04:38:54,557 - Processing triage assessment for patient age 12
+2025-03-27 04:38:54,581 - Assessment saved to database with severity level: Critical
+2025-03-27 04:41:35,248 - Successfully retrieved symptoms list
+2025-03-27 04:41:54,968 - Processing triage assessment for patient age 21
+2025-03-27 04:41:55,003 - Assessment saved to database with severity level: Urgent
+2025-03-27 04:43:41,593 - Successfully retrieved symptoms list
+2025-03-27 04:43:55,365 - Processing triage assessment for patient age 12
+2025-03-27 04:43:55,376 - Assessment saved to database with severity level: Urgent
+2025-03-27 04:46:29,457 - Successfully retrieved symptoms list
+2025-03-27 04:46:57,050 - Successfully retrieved symptoms list
+2025-03-27 04:48:10,007 - Successfully retrieved symptoms list
+2025-03-27 04:48:28,290 - Processing triage assessment for patient age 21
+2025-03-27 04:48:28,312 - Assessment saved to database with severity level: Urgent
+2025-03-27 04:49:27,545 - Successfully retrieved symptoms list
+2025-03-27 04:49:39,800 - Successfully retrieved symptoms list
+2025-03-27 04:49:53,981 - Processing triage assessment for patient age 12
+2025-03-27 04:49:53,998 - Assessment saved to database with severity level: Urgent
+2025-03-27 04:51:19,840 - Successfully retrieved symptoms list
+2025-03-27 04:51:43,993 - Processing triage assessment for patient age 13
+2025-03-27 04:51:44,018 - Assessment saved to database with severity level: Urgent
+2025-03-27 04:52:28,785 - Successfully retrieved symptoms list
+2025-03-27 04:54:47,211 - Successfully retrieved symptoms list
+2025-03-27 04:55:20,107 - Processing triage assessment for patient age 12
+2025-03-27 04:55:20,157 - Assessment saved to database with severity level: Urgent
+2025-03-27 04:57:34,082 - Successfully retrieved symptoms list
+2025-03-27 04:59:02,894 - Successfully retrieved symptoms list
+2025-03-27 04:59:12,754 - Successfully retrieved symptoms list
+2025-03-27 04:59:37,034 - Processing triage assessment for patient age 12
+2025-03-27 04:59:37,048 - Assessment saved to database with severity level: Urgent
+2025-03-27 05:01:44,520 - Successfully retrieved symptoms list
+2025-03-27 05:16:31,494 - Successfully retrieved symptoms list
+2025-03-27 05:18:27,224 - Successfully retrieved symptoms list
+2025-03-27 05:18:59,554 - Successfully retrieved symptoms list
+2025-03-27 05:19:11,636 - Successfully retrieved symptoms list
+2025-03-27 05:19:24,483 - Successfully retrieved symptoms list
+2025-03-27 05:19:36,449 - Successfully retrieved symptoms list
+2025-03-27 05:19:45,262 - Successfully retrieved symptoms list
+2025-03-27 05:20:02,260 - Processing triage assessment for patient age 12222123123313
+2025-03-27 05:20:02,260 - Error processing assessment: module 'models' has no attribute 'Assessment'
+2025-03-27 05:20:04,555 - Processing triage assessment for patient age 12222123123313
+2025-03-27 05:20:04,556 - Error processing assessment: module 'models' has no attribute 'Assessment'
+2025-03-27 05:21:08,245 - Successfully retrieved symptoms list
+2025-03-27 05:21:26,884 - Processing triage assessment for patient age 121222
+2025-03-27 05:21:26,917 - Error processing assessment: 'recommended_actions'
+2025-03-27 05:21:28,419 - Processing triage assessment for patient age 121222
+2025-03-27 05:21:28,451 - Error processing assessment: 'recommended_actions'
+2025-03-27 05:22:39,810 - Successfully retrieved symptoms list
+2025-03-27 05:22:52,483 - Processing triage assessment for patient age 122
+2025-03-27 05:22:52,531 - Assessment saved to database with severity level: Critical
+2025-03-27 05:22:58,530 - Processing triage assessment for patient age 122
+2025-03-27 05:22:58,553 - Assessment saved to database with severity level: Critical
+2025-03-27 05:23:00,163 - Processing triage assessment for patient age 122
+2025-03-27 05:23:00,185 - Assessment saved to database with severity level: Critical
+2025-03-27 05:23:00,550 - Processing triage assessment for patient age 122
+2025-03-27 05:23:00,569 - Assessment saved to database with severity level: Critical
+2025-03-27 05:24:19,278 - Successfully retrieved symptoms list

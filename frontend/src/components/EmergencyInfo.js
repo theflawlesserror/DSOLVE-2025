@@ -11,7 +11,46 @@ import {
   Select,
   MenuItem,
   Alert,
+  useTheme,
+  alpha,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(4),
+  borderRadius: theme.spacing(2),
+  background: alpha(theme.palette.background.paper, 0.9),
+  backdropFilter: 'blur(10px)',
+  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+  border: `1px solid ${alpha(theme.palette.primary.main, 0.1)}`,
+}));
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
+  '& .MuiOutlinedInput-root': {
+    borderRadius: theme.spacing(1),
+    '&:hover fieldset': {
+      borderColor: alpha(theme.palette.primary.main, 0.5),
+    },
+  },
+}));
+
+const StyledSelect = styled(Select)(({ theme }) => ({
+  borderRadius: theme.spacing(1),
+  '&:hover .MuiOutlinedInput-notchedOutline': {
+    borderColor: alpha(theme.palette.primary.main, 0.5),
+  },
+}));
+
+const StyledButton = styled(Button)(({ theme }) => ({
+  borderRadius: theme.spacing(2),
+  padding: theme.spacing(1.5, 4),
+  textTransform: 'none',
+  fontWeight: 600,
+  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+  '&:hover': {
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
+  },
+}));
 
 const ISD_CODES = [
   { code: '+1', country: 'United States/Canada', length: 10 },
@@ -26,27 +65,50 @@ const ISD_CODES = [
   { code: '+61', country: 'Australia', length: 9 },
 ];
 
+const RELATIONSHIPS = [
+  'Spouse',
+  'Parent',
+  'Child',
+  'Sibling',
+  'Grandparent',
+  'Aunt/Uncle',
+  'Cousin',
+  'Friend',
+  'Guardian',
+  'Other'
+];
+
 const EmergencyInfo = ({ assessment }) => {
+  const theme = useTheme();
   const [contactName, setContactName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [relationship, setRelationship] = useState('');
+  const [otherRelationship, setOtherRelationship] = useState('');
   const [selectedISD, setSelectedISD] = useState('');
   const [error, setError] = useState('');
 
   const handleNameChange = (event) => {
-    const value = event.target.value.replace(/[^a-zA-Z\s]/g, ''); // Only allow alphabets and spaces
+    const value = event.target.value.replace(/[^a-zA-Z\s]/g, '');
     setContactName(value);
     validateForm();
   };
 
   const handleRelationshipChange = (event) => {
-    const value = event.target.value.replace(/[^a-zA-Z\s]/g, ''); // Only allow alphabets and spaces
-    setRelationship(value);
+    setRelationship(event.target.value);
+    if (event.target.value !== 'Other') {
+      setOtherRelationship('');
+    }
+    validateForm();
+  };
+
+  const handleOtherRelationshipChange = (event) => {
+    const value = event.target.value.replace(/[^a-zA-Z\s]/g, '');
+    setOtherRelationship(value);
     validateForm();
   };
 
   const handlePhoneChange = (event) => {
-    const value = event.target.value.replace(/\D/g, ''); // Remove non-digits
+    const value = event.target.value.replace(/\D/g, '');
     setPhoneNumber(value);
     validatePhone(value);
   };
@@ -73,8 +135,13 @@ const EmergencyInfo = ({ assessment }) => {
       return false;
     }
 
-    if (!relationship.trim()) {
-      setError('Relationship is required and can only contain letters and spaces');
+    if (!relationship) {
+      setError('Please select a relationship');
+      return false;
+    }
+
+    if (relationship === 'Other' && !otherRelationship.trim()) {
+      setError('Please specify the relationship');
       return false;
     }
 
@@ -100,27 +167,83 @@ const EmergencyInfo = ({ assessment }) => {
   };
 
   return (
-    <Box sx={{ mt: 3 }}>
-      <Typography variant="h6" gutterBottom>
-        Emergency Contact Information
-      </Typography>
-      <Paper sx={{ p: 2, bgcolor: 'background.default' }}>
-        <Grid container spacing={2}>
+    <Box sx={{ mt: 4 }}>
+      <StyledPaper elevation={0}>
+        <Typography 
+          variant="h5" 
+          gutterBottom 
+          sx={{ 
+            fontWeight: 600,
+            color: theme.palette.primary.main,
+            mb: 3
+          }}
+        >
+          Emergency Contact Information
+        </Typography>
+        {error && (
+          <Alert 
+            severity="error" 
+            sx={{ 
+              mb: 3,
+              borderRadius: 2,
+              '& .MuiAlert-message': {
+                fontWeight: 500
+              }
+            }}
+          >
+            {error}
+          </Alert>
+        )}
+        <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <TextField
+            <StyledTextField
               fullWidth
-              label="Emergency Contact Name"
-              placeholder="Enter contact name (letters only)"
+              label="Contact Name"
               value={contactName}
               onChange={handleNameChange}
-              error={!!error && !contactName.trim()}
-              helperText={error && !contactName.trim() ? error : ''}
+              error={!!error && error.includes('Contact name')}
+              helperText={error && error.includes('Contact name') ? error : ''}
+              placeholder="Enter contact's name"
             />
           </Grid>
           <Grid item xs={12} md={6}>
+            <FormControl fullWidth error={!!error && error.includes('relationship')}>
+              <InputLabel>Relationship</InputLabel>
+              <StyledSelect
+                value={relationship}
+                onChange={handleRelationshipChange}
+                label="Relationship"
+              >
+                {RELATIONSHIPS.map((rel) => (
+                  <MenuItem key={rel} value={rel}>
+                    {rel}
+                  </MenuItem>
+                ))}
+              </StyledSelect>
+              {error && error.includes('relationship') && (
+                <Typography color="error" variant="caption" sx={{ mt: 1 }}>
+                  {error}
+                </Typography>
+              )}
+            </FormControl>
+          </Grid>
+          {relationship === 'Other' && (
+            <Grid item xs={12}>
+              <StyledTextField
+                fullWidth
+                label="Specify Relationship"
+                value={otherRelationship}
+                onChange={handleOtherRelationshipChange}
+                error={!!error && error.includes('specify')}
+                helperText={error && error.includes('specify') ? error : ''}
+                placeholder="Enter relationship"
+              />
+            </Grid>
+          )}
+          <Grid item xs={12} md={4}>
             <FormControl fullWidth>
               <InputLabel>Country Code</InputLabel>
-              <Select
+              <StyledSelect
                 value={selectedISD}
                 onChange={(e) => setSelectedISD(e.target.value)}
                 label="Country Code"
@@ -130,45 +253,35 @@ const EmergencyInfo = ({ assessment }) => {
                     {code.code} ({code.country})
                   </MenuItem>
                 ))}
-              </Select>
+              </StyledSelect>
             </FormControl>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
+          <Grid item xs={12} md={8}>
+            <StyledTextField
               fullWidth
-              label="Emergency Contact Phone"
-              placeholder="Enter contact phone"
+              label="Phone Number"
               value={phoneNumber}
               onChange={handlePhoneChange}
-              error={!!error && error.includes('phone')}
-              helperText={error && error.includes('phone') ? error : ''}
-              inputProps={{ maxLength: selectedISD ? ISD_CODES.find(code => code.code === selectedISD).length : undefined }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <TextField
-              fullWidth
-              label="Relationship to Patient"
-              placeholder="Enter relationship (letters only)"
-              value={relationship}
-              onChange={handleRelationshipChange}
-              error={!!error && error.includes('relationship')}
-              helperText={error && error.includes('relationship') ? error : ''}
+              error={!!error && error.includes('Phone number')}
+              helperText={error && error.includes('Phone number') ? error : ''}
+              placeholder="Enter phone number"
             />
           </Grid>
           <Grid item xs={12}>
-            <Button
-              variant="contained"
-              color="primary"
-              fullWidth
-              onClick={handleSave}
-              disabled={!!error}
-            >
-              Save Emergency Contact
-            </Button>
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <StyledButton
+                variant="contained"
+                color="primary"
+                onClick={handleSave}
+                disabled={!!error}
+                size="large"
+              >
+                Save Emergency Contact
+              </StyledButton>
+            </Box>
           </Grid>
         </Grid>
-      </Paper>
+      </StyledPaper>
     </Box>
   );
 };

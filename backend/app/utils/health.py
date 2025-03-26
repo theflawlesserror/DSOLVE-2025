@@ -4,8 +4,8 @@ from sqlalchemy import text
 from datetime import datetime
 import psutil
 import os
-from ..models.database import get_db
-from ..utils.logging import logger
+from models.database import get_db
+from utils.logging import logger
 
 router = APIRouter()
 

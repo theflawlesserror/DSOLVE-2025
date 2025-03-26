@@ -9,9 +9,27 @@ services:
         value: 3.9.0
       - key: DATABASE_URL
         value: postgres://postgres:postgres@localhost:5432/triage
-    healthCheckPath: /
+      - key: ENVIRONMENT
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: ENABLE_ACCESS_LOGS
+        value: true
+      - key: ENABLE_METRICS
+        value: true
+      - key: ALLOWED_ORIGINS
+        value: https://triage-ai-frontend.onrender.com
+    healthCheckPath: /health
     autoDeploy: true
     plan: free
+    monitoring:
+      enabled: true
+      metrics:
+        - cpu
+        - memory
+        - disk
+        - requests
+        - errors
 
   - type: web
     name: triage-ai-frontend
@@ -21,10 +39,17 @@ services:
     envVars:
       - key: REACT_APP_API_URL
         value: https://triage-ai-backend.onrender.com
+      - key: REACT_APP_ENVIRONMENT
+        value: production
     routes:
       - type: rewrite
         source: /*
         destination: /index.html
     healthCheckPath: /
     autoDeploy: true
-    plan: free 
+    plan: free
+    monitoring:
+      enabled: true
+      metrics:
+        - requests
+        - errors

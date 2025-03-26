@@ -1,0 +1,55 @@
+2025-03-27 03:01:36,573 - triage_ai - ERROR - Database health check failed: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-03-27 03:02:49,898 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:06:55,490 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:07:24,685 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:08:25,030 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:09:33,976 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:10:00,757 - triage_ai - INFO - Processing triage assessment for patient age 14
+2025-03-27 03:10:00,798 - triage_ai - INFO - Assessment completed with severity level: Critical
+2025-03-27 03:11:34,950 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:11:51,561 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:12:10,333 - triage_ai - INFO - Processing triage assessment for patient age 12
+2025-03-27 03:12:10,352 - triage_ai - INFO - Assessment completed with severity level: Urgent
+2025-03-27 03:14:42,063 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:15:04,684 - triage_ai - INFO - Processing triage assessment for patient age 14
+2025-03-27 03:15:04,699 - triage_ai - INFO - Assessment completed with severity level: Urgent
+2025-03-27 03:16:24,786 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:16:38,203 - triage_ai - INFO - Processing triage assessment for patient age 12
+2025-03-27 03:16:38,220 - triage_ai - INFO - Assessment completed with severity level: Critical
+2025-03-27 03:18:16,170 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:18:33,214 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:21:16,702 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:21:26,604 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:21:57,145 - triage_ai - INFO - Processing triage assessment for patient age -11
+2025-03-27 03:21:59,255 - triage_ai - INFO - Processing triage assessment for patient age -11
+2025-03-27 03:22:03,786 - triage_ai - INFO - Processing triage assessment for patient age -11
+2025-03-27 03:22:07,033 - triage_ai - INFO - Processing triage assessment for patient age -11
+2025-03-27 03:22:08,240 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:22:52,872 - triage_ai - INFO - Processing triage assessment for patient age 11
+2025-03-27 03:22:52,917 - triage_ai - INFO - Assessment completed with severity level: Urgent
+2025-03-27 03:23:44,330 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:23:55,529 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:24:56,548 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:25:04,261 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:25:42,395 - triage_ai - INFO - Processing triage assessment for patient age 120
+2025-03-27 03:25:44,171 - triage_ai - INFO - Processing triage assessment for patient age 120
+2025-03-27 03:25:52,051 - triage_ai - INFO - Processing triage assessment for patient age 120
+2025-03-27 03:25:55,983 - triage_ai - INFO - Processing triage assessment for patient age 120
+2025-03-27 03:26:01,928 - triage_ai - INFO - Processing triage assessment for patient age 120
+2025-03-27 03:26:06,889 - triage_ai - INFO - Processing triage assessment for patient age 120
+2025-03-27 03:26:10,457 - triage_ai - INFO - Processing triage assessment for patient age 120
+2025-03-27 03:26:14,564 - triage_ai - INFO - Processing triage assessment for patient age 120
+2025-03-27 03:26:14,814 - triage_ai - INFO - Processing triage assessment for patient age 120
+2025-03-27 03:26:18,508 - triage_ai - INFO - Processing triage assessment for patient age 120
+2025-03-27 03:26:18,829 - triage_ai - INFO - Processing triage assessment for patient age 120
+2025-03-27 03:26:26,584 - triage_ai - INFO - Processing triage assessment for patient age 120
+2025-03-27 03:26:46,298 - triage_ai - INFO - Processing triage assessment for patient age 120
+2025-03-27 03:27:06,102 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:27:56,412 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:28:42,165 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:29:35,900 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:29:36,870 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:29:39,704 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:30:01,277 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 03:30:23,053 - triage_ai - INFO - Processing triage assessment for patient age 12
+2025-03-27 03:30:23,097 - triage_ai - INFO - Assessment saved to database with severity level: Urgent

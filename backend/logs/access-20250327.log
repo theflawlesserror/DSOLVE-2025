@@ -1,0 +1,55 @@
+2025-03-27 03:01:36,573 - Database health check failed: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-03-27 03:02:49,898 - Successfully retrieved symptoms list
+2025-03-27 03:06:55,490 - Successfully retrieved symptoms list
+2025-03-27 03:07:24,685 - Successfully retrieved symptoms list
+2025-03-27 03:08:25,030 - Successfully retrieved symptoms list
+2025-03-27 03:09:33,976 - Successfully retrieved symptoms list
+2025-03-27 03:10:00,757 - Processing triage assessment for patient age 14
+2025-03-27 03:10:00,798 - Assessment completed with severity level: Critical
+2025-03-27 03:11:34,950 - Successfully retrieved symptoms list
+2025-03-27 03:11:51,561 - Successfully retrieved symptoms list
+2025-03-27 03:12:10,333 - Processing triage assessment for patient age 12
+2025-03-27 03:12:10,352 - Assessment completed with severity level: Urgent
+2025-03-27 03:14:42,063 - Successfully retrieved symptoms list
+2025-03-27 03:15:04,684 - Processing triage assessment for patient age 14
+2025-03-27 03:15:04,699 - Assessment completed with severity level: Urgent
+2025-03-27 03:16:24,786 - Successfully retrieved symptoms list
+2025-03-27 03:16:38,203 - Processing triage assessment for patient age 12
+2025-03-27 03:16:38,220 - Assessment completed with severity level: Critical
+2025-03-27 03:18:16,170 - Successfully retrieved symptoms list
+2025-03-27 03:18:33,214 - Successfully retrieved symptoms list
+2025-03-27 03:21:16,702 - Successfully retrieved symptoms list
+2025-03-27 03:21:26,604 - Successfully retrieved symptoms list
+2025-03-27 03:21:57,145 - Processing triage assessment for patient age -11
+2025-03-27 03:21:59,255 - Processing triage assessment for patient age -11
+2025-03-27 03:22:03,786 - Processing triage assessment for patient age -11
+2025-03-27 03:22:07,033 - Processing triage assessment for patient age -11
+2025-03-27 03:22:08,240 - Successfully retrieved symptoms list
+2025-03-27 03:22:52,872 - Processing triage assessment for patient age 11
+2025-03-27 03:22:52,917 - Assessment completed with severity level: Urgent
+2025-03-27 03:23:44,330 - Successfully retrieved symptoms list
+2025-03-27 03:23:55,529 - Successfully retrieved symptoms list
+2025-03-27 03:24:56,548 - Successfully retrieved symptoms list
+2025-03-27 03:25:04,261 - Successfully retrieved symptoms list
+2025-03-27 03:25:42,395 - Processing triage assessment for patient age 120
+2025-03-27 03:25:44,171 - Processing triage assessment for patient age 120
+2025-03-27 03:25:52,051 - Processing triage assessment for patient age 120
+2025-03-27 03:25:55,983 - Processing triage assessment for patient age 120
+2025-03-27 03:26:01,928 - Processing triage assessment for patient age 120
+2025-03-27 03:26:06,889 - Processing triage assessment for patient age 120
+2025-03-27 03:26:10,457 - Processing triage assessment for patient age 120
+2025-03-27 03:26:14,564 - Processing triage assessment for patient age 120
+2025-03-27 03:26:14,814 - Processing triage assessment for patient age 120
+2025-03-27 03:26:18,508 - Processing triage assessment for patient age 120
+2025-03-27 03:26:18,829 - Processing triage assessment for patient age 120
+2025-03-27 03:26:26,584 - Processing triage assessment for patient age 120
+2025-03-27 03:26:46,298 - Processing triage assessment for patient age 120
+2025-03-27 03:27:06,102 - Successfully retrieved symptoms list
+2025-03-27 03:27:56,412 - Successfully retrieved symptoms list
+2025-03-27 03:28:42,165 - Successfully retrieved symptoms list
+2025-03-27 03:29:35,900 - Successfully retrieved symptoms list
+2025-03-27 03:29:36,870 - Successfully retrieved symptoms list
+2025-03-27 03:29:39,704 - Successfully retrieved symptoms list
+2025-03-27 03:30:01,277 - Successfully retrieved symptoms list
+2025-03-27 03:30:23,053 - Processing triage assessment for patient age 12
+2025-03-27 03:30:23,097 - Assessment saved to database with severity level: Urgent

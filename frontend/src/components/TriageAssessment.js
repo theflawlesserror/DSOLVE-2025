@@ -16,6 +16,9 @@ import {
   Step,
   StepLabel,
   CircularProgress,
+  List,
+  ListItem,
+  ListItemText,
 } from '@mui/material';
 import axios from 'axios';
 import EmergencyInfo from './EmergencyInfo';
@@ -34,6 +37,8 @@ const TriageAssessment = () => {
   const [assessment, setAssessment] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [causeValidation, setCauseValidation] = useState(null);
+  const [validatingCause, setValidatingCause] = useState(false);
 
   useEffect(() => {
     // Fetch common symptoms from the API
@@ -59,10 +64,24 @@ const TriageAssessment = () => {
   };
 
   const handleNext = () => {
+    // Validate current step before proceeding
+    if (activeStep === 0) {
+      if (!patientAge || !patientGender || (causeValidation && !causeValidation.is_valid)) {
+        setError('Please complete all required fields before proceeding');
+        return;
+      }
+    } else if (activeStep === 1) {
+      if (selectedSymptoms.length === 0) {
+        setError('Please select at least one symptom');
+        return;
+      }
+    }
+    setError(null);
     setActiveStep((prevStep) => prevStep + 1);
   };
 
   const handleBack = () => {
+    setError(null);
     setActiveStep((prevStep) => prevStep - 1);
   };
 
@@ -80,11 +99,44 @@ const TriageAssessment = () => {
       setError(null);
       handleNext();
     } catch (err) {
-      setError('Failed to assess triage');
+      if (err.response?.data?.detail?.message) {
+        setError(err.response.data.detail.message);
+      } else if (err.response?.data?.detail) {
+        setError(err.response.data.detail);
+      } else {
+        setError('Failed to assess triage. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
   };
+
+  const validateCause = async (cause) => {
+    if (!cause || cause.length < 3) {
+      setCauseValidation(null);
+      return;
+    }
+
+    setValidatingCause(true);
+    try {
+      const response = await axios.post(`${API_URL}/triage/validate-cause`, {
+        cause: cause
+      });
+      setCauseValidation(response.data);
+    } catch (err) {
+      setError('Failed to validate injury cause');
+    } finally {
+      setValidatingCause(false);
+    }
+  };
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      validateCause(mechanismOfInjury);
+    }, 500);
+
+    return () => clearTimeout(timeoutId);
+  }, [mechanismOfInjury]);
 
   const getStepContent = (step) => {
     switch (step) {
@@ -97,8 +149,33 @@ const TriageAssessment = () => {
                 label="Patient Age"
                 type="number"
                 value={patientAge}
-                onChange={(e) => setPatientAge(e.target.value)}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // Only allow digits
+                  if (value === '' || /^\d+$/.test(value)) {
+                    const numValue = parseInt(value);
+                    // Only allow positive numbers between 1 and 120
+                    if (value === '' || (numValue > 0 && numValue <= 120)) {
+                      setPatientAge(value);
+                    }
+                  }
+                }}
+                onKeyPress={(e) => {
+                  // Only allow digits
+                  if (!/[0-9]/.test(e.key)) {
+                    e.preventDefault();
+                  }
+                }}
+                inputProps={{
+                  min: 1,
+                  max: 120,
+                  step: 1,
+                  pattern: '[0-9]*',
+                  inputMode: 'numeric'
+                }}
                 required
+                error={patientAge && (parseInt(patientAge) <= 0 || parseInt(patientAge) > 120)}
+                helperText={patientAge && (parseInt(patientAge) <= 0 || parseInt(patientAge) > 120) ? 'Please enter a valid age between 1 and 120' : ''}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -118,20 +195,47 @@ const TriageAssessment = () => {
             <Grid item xs={12}>
               <TextField
                 fullWidth
-                label="Mechanism of Injury"
+                label="How did the injury/illness occur?"
+                placeholder="e.g., car accident, fall, sports injury, etc."
                 value={mechanismOfInjury}
                 onChange={(e) => setMechanismOfInjury(e.target.value)}
+                error={causeValidation && !causeValidation.is_valid}
+                helperText={causeValidation?.message}
+                disabled={validatingCause}
               />
+              {causeValidation && !causeValidation.is_valid && causeValidation.suggestions && (
+                <Box sx={{ mt: 1 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    Suggestions:
+                  </Typography>
+                  <List dense>
+                    {causeValidation.suggestions.map((suggestion, index) => (
+                      <ListItem key={index}>
+                        <ListItemText primary={suggestion} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Box>
+              )}
             </Grid>
             <Grid item xs={12}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleNext}
-                disabled={!patientAge || !patientGender}
-              >
-                Next
-              </Button>
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+                <Button
+                  variant="outlined"
+                  onClick={handleBack}
+                  disabled={activeStep === 0}
+                >
+                  Back
+                </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleNext}
+                  disabled={!patientAge || !patientGender || (causeValidation && !causeValidation.is_valid)}
+                >
+                  Next
+                </Button>
+              </Box>
             </Grid>
           </Grid>
         );
@@ -164,14 +268,31 @@ const TriageAssessment = () => {
               </Box>
             </Grid>
             <Grid item xs={12}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSubmit}
-                disabled={selectedSymptoms.length === 0 || loading}
-              >
-                {loading ? <CircularProgress size={24} /> : 'Assess Triage'}
-              </Button>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
+                <Button
+                  variant="outlined"
+                  onClick={handleBack}
+                >
+                  Back
+                </Button>
+                <Box sx={{ display: 'flex', gap: 2 }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                    disabled={selectedSymptoms.length === 0 || loading}
+                  >
+                    {loading ? <CircularProgress size={24} /> : 'Assess Triage'}
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    onClick={handleNext}
+                    disabled={selectedSymptoms.length === 0}
+                  >
+                    Next
+                  </Button>
+                </Box>
+              </Box>
             </Grid>
           </Grid>
         );
@@ -202,6 +323,30 @@ const TriageAssessment = () => {
               </Box>
             )}
             <EmergencyInfo assessment={assessment} />
+            <Box sx={{ mt: 3, display: 'flex', justifyContent: 'space-between', gap: 2 }}>
+              <Button
+                variant="outlined"
+                onClick={handleBack}
+              >
+                Back
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  // Reset form
+                  setActiveStep(0);
+                  setPatientAge('');
+                  setPatientGender('');
+                  setMechanismOfInjury('');
+                  setSelectedSymptoms([]);
+                  setAssessment(null);
+                  setError(null);
+                }}
+              >
+                Start New Assessment
+              </Button>
+            </Box>
           </>
         );
       default:

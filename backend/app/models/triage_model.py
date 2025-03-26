@@ -1,12 +1,46 @@
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
+from typing import List, Dict, Any
+import logging
+
+logger = logging.getLogger(__name__)
 
 class TriageModel:
     def __init__(self):
         self.model = RandomForestClassifier(n_estimators=100, random_state=42)
         self.scaler = StandardScaler()
         self.severity_levels = ["Non-urgent", "Semi-urgent", "Urgent", "Critical"]
+        self.common_injury_causes = {
+            'accidents': [
+                'car accident', 'motor vehicle accident', 'mva', 'road accident',
+                'fall', 'slip and fall', 'trip and fall', 'falling down',
+                'sports injury', 'athletic injury', 'sports accident',
+                'workplace accident', 'industrial accident', 'work injury',
+                'bicycle accident', 'motorcycle accident', 'pedestrian accident',
+                'burn', 'scald', 'chemical burn', 'electrical burn',
+                'drowning', 'near drowning', 'water accident',
+                'poisoning', 'overdose', 'drug overdose', 'chemical exposure',
+                'assault', 'physical assault', 'violence', 'fight',
+                'gunshot', 'stabbing', 'penetrating injury',
+                'animal bite', 'dog bite', 'insect bite', 'snake bite',
+                'natural disaster', 'earthquake', 'flood', 'storm',
+                'explosion', 'blast injury', 'fire',
+                'crush injury', 'trauma', 'blunt force trauma'
+            ],
+            'medical_conditions': [
+                'heart attack', 'myocardial infarction', 'cardiac arrest',
+                'stroke', 'cerebrovascular accident', 'brain attack',
+                'diabetic emergency', 'hypoglycemia', 'hyperglycemia',
+                'seizure', 'epileptic seizure', 'convulsion',
+                'allergic reaction', 'anaphylaxis', 'allergy',
+                'asthma attack', 'breathing difficulty', 'respiratory distress',
+                'infection', 'bacterial infection', 'viral infection',
+                'pregnancy complication', 'labor', 'delivery',
+                'mental health crisis', 'psychiatric emergency',
+                'overdose', 'drug overdose', 'substance abuse'
+            ]
+        }
         
     def _prepare_features(self, symptoms, patient_age, patient_gender):
         # Convert gender to numeric
@@ -23,6 +57,47 @@ class TriageModel:
             
         features.extend(symptom_severities)
         return np.array(features).reshape(1, -1)
+    
+    def validate_injury_cause(self, cause: str) -> Dict[str, Any]:
+        """
+        Validate and categorize the injury cause.
+        Returns a dictionary with validation results and suggestions.
+        """
+        cause = cause.lower().strip()
+        
+        # Check if the cause is empty or too short
+        if not cause or len(cause) < 3:
+            return {
+                'is_valid': False,
+                'message': 'Please provide more details about how the injury occurred.',
+                'suggestions': ['Be specific about what happened', 'Include the type of accident or condition']
+            }
+
+        # Check for common injury causes
+        found_causes = []
+        for category, causes in self.common_injury_causes.items():
+            for valid_cause in causes:
+                if valid_cause in cause:
+                    found_causes.append(valid_cause)
+
+        if not found_causes:
+            return {
+                'is_valid': False,
+                'message': 'Please provide a more specific cause of injury or illness.',
+                'suggestions': [
+                    'Was it an accident? (e.g., fall, car accident)',
+                    'Is it a medical condition? (e.g., heart attack, stroke)',
+                    'Was it caused by violence or trauma?',
+                    'Was it due to exposure to something? (e.g., chemicals, heat)'
+                ]
+            }
+
+        return {
+            'is_valid': True,
+            'message': 'Valid cause of injury/illness identified.',
+            'causes': found_causes,
+            'category': 'accidents' if any(cause in self.common_injury_causes['accidents'] for cause in found_causes) else 'medical_conditions'
+        }
     
     def predict(self, symptoms, patient_age, patient_gender):
         features = self._prepare_features(symptoms, patient_age, patient_gender)

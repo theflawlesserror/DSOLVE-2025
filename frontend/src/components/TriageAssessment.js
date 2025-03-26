@@ -12,12 +12,20 @@ import {
   Chip,
   Grid,
   Alert,
+  Stepper,
+  Step,
+  StepLabel,
+  CircularProgress,
 } from '@mui/material';
 import axios from 'axios';
+import EmergencyInfo from './EmergencyInfo';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
+const steps = ['Patient Information', 'Symptoms', 'Assessment'];
+
 const TriageAssessment = () => {
+  const [activeStep, setActiveStep] = useState(0);
   const [symptoms, setSymptoms] = useState([]);
   const [selectedSymptoms, setSelectedSymptoms] = useState([]);
   const [patientAge, setPatientAge] = useState('');
@@ -25,6 +33,7 @@ const TriageAssessment = () => {
   const [mechanismOfInjury, setMechanismOfInjury] = useState('');
   const [assessment, setAssessment] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     // Fetch common symptoms from the API
@@ -49,8 +58,17 @@ const TriageAssessment = () => {
     setSelectedSymptoms(selectedSymptoms.filter(s => s.name !== symptomName));
   };
 
+  const handleNext = () => {
+    setActiveStep((prevStep) => prevStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevStep) => prevStep - 1);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(`${API_URL}/triage/assess`, {
         symptoms: selectedSymptoms,
@@ -60,25 +78,18 @@ const TriageAssessment = () => {
       });
       setAssessment(response.data);
       setError(null);
+      handleNext();
     } catch (err) {
       setError('Failed to assess triage');
+    } finally {
+      setLoading(false);
     }
   };
 
-  return (
-    <Box sx={{ maxWidth: 800, mx: 'auto', p: 2 }}>
-      <Paper sx={{ p: 3 }}>
-        <Typography variant="h5" gutterBottom>
-          Triage Assessment
-        </Typography>
-
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
-
-        <form onSubmit={handleSubmit}>
+  const getStepContent = (step) => {
+    switch (step) {
+      case 0:
+        return (
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <TextField
@@ -113,6 +124,21 @@ const TriageAssessment = () => {
               />
             </Grid>
             <Grid item xs={12}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleNext}
+                disabled={!patientAge || !patientGender}
+              >
+                Next
+              </Button>
+            </Grid>
+          </Grid>
+        );
+      case 1:
+        return (
+          <Grid container spacing={3}>
+            <Grid item xs={12}>
               <Typography variant="subtitle1" gutterBottom>
                 Select Symptoms
               </Typography>
@@ -139,41 +165,74 @@ const TriageAssessment = () => {
             </Grid>
             <Grid item xs={12}>
               <Button
-                type="submit"
                 variant="contained"
                 color="primary"
-                fullWidth
-                disabled={selectedSymptoms.length === 0}
+                onClick={handleSubmit}
+                disabled={selectedSymptoms.length === 0 || loading}
               >
-                Assess Triage
+                {loading ? <CircularProgress size={24} /> : 'Assess Triage'}
               </Button>
             </Grid>
           </Grid>
-        </form>
+        );
+      case 2:
+        return (
+          <>
+            {assessment && (
+              <Box sx={{ mt: 3 }}>
+                <Typography variant="h6" gutterBottom>
+                  Assessment Results
+                </Typography>
+                <Paper sx={{ p: 2, bgcolor: 'background.default' }}>
+                  <Typography variant="subtitle1">
+                    Severity Level: {assessment.severity_level}
+                  </Typography>
+                  <Typography variant="subtitle1">
+                    Time to Treatment: {assessment.estimated_time_to_treatment}
+                  </Typography>
+                  <Typography variant="subtitle1" gutterBottom>
+                    Recommended Actions:
+                  </Typography>
+                  <ul>
+                    {assessment.recommended_actions.map((action, index) => (
+                      <li key={index}>{action}</li>
+                    ))}
+                  </ul>
+                </Paper>
+              </Box>
+            )}
+            <EmergencyInfo assessment={assessment} />
+          </>
+        );
+      default:
+        return 'Unknown step';
+    }
+  };
 
-        {assessment && (
-          <Box sx={{ mt: 3 }}>
-            <Typography variant="h6" gutterBottom>
-              Assessment Results
-            </Typography>
-            <Paper sx={{ p: 2, bgcolor: 'background.default' }}>
-              <Typography variant="subtitle1">
-                Severity Level: {assessment.severity_level}
-              </Typography>
-              <Typography variant="subtitle1">
-                Time to Treatment: {assessment.estimated_time_to_treatment}
-              </Typography>
-              <Typography variant="subtitle1" gutterBottom>
-                Recommended Actions:
-              </Typography>
-              <ul>
-                {assessment.recommended_actions.map((action, index) => (
-                  <li key={index}>{action}</li>
-                ))}
-              </ul>
-            </Paper>
-          </Box>
+  return (
+    <Box sx={{ maxWidth: 800, mx: 'auto', p: 2 }}>
+      <Paper sx={{ p: 3 }}>
+        <Typography variant="h5" gutterBottom>
+          Triage Assessment
+        </Typography>
+
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
         )}
+
+        <Stepper activeStep={activeStep} sx={{ mb: 4 }}>
+          {steps.map((label) => (
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+
+        <form onSubmit={handleSubmit}>
+          {getStepContent(activeStep)}
+        </form>
       </Paper>
     </Box>
   );

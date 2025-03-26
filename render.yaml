@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: triage-ai-backend
+    env: python
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.9.0
+    healthCheckPath: /
+    autoDeploy: true
+
+  - type: web
+    name: triage-ai-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://triage-ai-backend.onrender.com
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    healthCheckPath: /
+    autoDeploy: true 

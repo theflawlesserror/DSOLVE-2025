@@ -53,3 +53,7 @@
 2025-03-27 03:30:01,277 - triage_ai - INFO - Successfully retrieved symptoms list
 2025-03-27 03:30:23,053 - triage_ai - INFO - Processing triage assessment for patient age 12
 2025-03-27 03:30:23,097 - triage_ai - INFO - Assessment saved to database with severity level: Urgent
+2025-03-27 04:34:07,836 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 04:34:20,863 - triage_ai - INFO - Successfully retrieved symptoms list
+2025-03-27 04:35:06,060 - triage_ai - INFO - Processing triage assessment for patient age 12
+2025-03-27 04:35:06,203 - triage_ai - INFO - Assessment saved to database with severity level: Critical
